@@ -1,6 +1,8 @@
 use rs_filter::*;
 use rs_filter_macros::filter_for;
 
+mod lifetimes;
+
 struct TestStruct {
     a: i32,
     b: Option<i32>,
