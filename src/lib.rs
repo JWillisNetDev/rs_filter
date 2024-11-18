@@ -1,3 +1,6 @@
+#[cfg(feature = "macros")]
+pub use rs_filter_macros::*;
+
 pub trait Filterable<Filter> {
     fn is_match(&self, filter: &Filter) -> bool;
 }
