@@ -1,0 +1,55 @@
+on:
+  push:
+    tags:
+      - "*"
+
+name: Publish to Crates.io
+
+jobs:
+  audit:
+    name: Cargo audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/audit@v1
+
+  build-and-test-linux:
+    name: Build and Test (Linux/stable)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - run: cargo test ./rs_filter --workspace --all-features
+
+  publish-crates-io:
+    name: Publish to Crates.io
+    runs-on: ubuntu-latest
+    needs:
+      - audit
+      - build-and-test-linux
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: cargo install release
+        run: cargo install cargo-release
+
+      - name: cargo login
+        run: cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
+
+      - name: cargo release
+        run: |
+          cargo release \
+            publish \
+            --workspace \
+            --all-features \
+            --allow-branch HEAD \
+            --no-confirm \
+            --no-verify \
+            --execute
