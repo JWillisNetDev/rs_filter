@@ -6,15 +6,18 @@ members = ["rs_filter_macros"]
 authors = ["Joshua Willis"]
 description = "A simple filter library for matching on complex data structures."
 edition = "2021"
+license = "MIT"
 repository = "https://github.com/JWillisNetDev/rs_filter"
-version = "0.1.0"
 include = ["src/**/*"]
+version = "0.1.0"
 
 [package]
 authors.workspace = true
-name = "rs_filter"
 description.workspace = true
 edition.workspace = true
+license.workspace = true
+name = "rs_filter"
+repository.workspace = true
 version.workspace = true
 
 [features]
@@ -22,4 +25,4 @@ default = ["macros"]
 macros = ["dep:rs_filter_macros"]
 
 [dependencies]
-rs_filter_macros = { path = "./rs_filter_macros", optional = true }
+rs_filter_macros = { path = "./rs_filter_macros", version = "0.1.0", optional = true }

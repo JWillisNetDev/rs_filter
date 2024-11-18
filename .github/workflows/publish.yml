@@ -20,7 +20,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
 
-      - run: cargo test ./rs_filter --workspace --all-features
+      - uses: taiki-e/install-action@nextest
+      - name: 'Build and test'
+        run: cargo nextest run --workspace --all-features
 
   publish-crates-io:
     name: Publish to Crates.io
