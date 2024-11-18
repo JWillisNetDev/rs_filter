@@ -1,7 +1,7 @@
 extern crate proc_macro2;
 use proc_macro::TokenStream;
-use syn::{parse_macro_input, Ident, ItemStruct};
 use quote::quote;
+use syn::{parse_macro_input, Ident, ItemStruct};
 
 #[proc_macro_attribute]
 pub fn filter_for(args: TokenStream, input: TokenStream) -> TokenStream {
@@ -14,9 +14,11 @@ pub fn filter_for(args: TokenStream, input: TokenStream) -> TokenStream {
     let filter_type = input.ident.clone();
 
     // Get all the field names.
-    let fields: Vec<&Ident> = input.fields.iter().filter(|field| field.ident.is_some()).map(|field| {
-        field.ident.as_ref().unwrap()
-    }).collect();
+    let fields: Vec<&Ident> = input
+        .fields
+        .iter()
+        .filter_map(|field| field.ident.as_ref())
+        .collect();
 
     // Construct the filter method body.
     let q = quote! {

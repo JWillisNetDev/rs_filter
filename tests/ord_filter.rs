@@ -1,4 +1,4 @@
-use rs_filter::{OrdFilter, Filterable};
+use rs_filter::{Filterable, OrdFilter};
 
 #[test]
 fn test_ord_filter_eq() {

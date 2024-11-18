@@ -1,4 +1,4 @@
-use rs_filter::{StringFilter, Filterable};
+use rs_filter::{Filterable, StringFilter};
 
 #[test]
 fn test_string_filter_eq() {
