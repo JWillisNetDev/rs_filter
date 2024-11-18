@@ -1,21 +1,14 @@
-#[cfg(feature = "derive")]
-pub mod derive;
-
 pub trait Filterable<Filter> {
     fn is_match(&self, filter: &Filter) -> bool;
 }
 
+#[derive(Default, Clone, PartialEq,)]
 pub enum EqFilter<T: PartialEq> {
+    #[default]
     Any,
     None,
     Eq(T),
     Neq(T),
-}
-
-impl<T: PartialEq> std::default::Default for EqFilter<T> {
-    fn default() -> Self {
-        EqFilter::Any
-    }
 }
 
 impl<T: PartialEq> Filterable<EqFilter<T>> for T {
@@ -40,7 +33,9 @@ impl<T: PartialEq> Filterable<EqFilter<T>> for Option<T> {
     }
 }
 
+#[derive(Default, Clone, PartialEq,)]
 pub enum OrdFilter<T: PartialOrd> {
+    #[default]
     Any,
     None,
     Eq(T),
@@ -49,12 +44,6 @@ pub enum OrdFilter<T: PartialOrd> {
     Gte(T),
     Lt(T),
     Lte(T),
-}
-
-impl<T: PartialOrd> std::default::Default for OrdFilter<T> {
-    fn default() -> Self {
-        OrdFilter::Any
-    }
 }
 
 impl<T: PartialOrd> Filterable<OrdFilter<T>> for T {
@@ -87,7 +76,9 @@ impl<T: PartialOrd> Filterable<OrdFilter<T>> for Option<T> {
     }
 }
 
+#[derive(Default, Clone, PartialEq,)]
 pub enum StringFilter<T: AsRef<str>> {
+    #[default]
     Any,
     None,
     Eq(T),
@@ -95,12 +86,6 @@ pub enum StringFilter<T: AsRef<str>> {
     Contains(T),
     StartsWith(T),
     EndsWith(T),
-}
-
-impl std::default::Default for StringFilter<String> {
-    fn default() -> Self {
-        StringFilter::Any
-    }
 }
 
 impl<T: AsRef<str>> Filterable<StringFilter<T>> for T {

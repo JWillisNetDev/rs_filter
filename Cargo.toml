@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["rs_filter_derive"]
+members = ["rs_filter_macros"]
 
 [workspace.package]
 authors = ["Joshua Willis"]
@@ -8,6 +8,7 @@ description = "A simple filter library for matching on complex data structures."
 edition = "2021"
 repository = "https://github.com/JWillisNetDev/rs_filter"
 version = "0.1.0"
+include = ["src/**/*"]
 
 [package]
 authors.workspace = true
@@ -17,5 +18,8 @@ edition.workspace = true
 version.workspace = true
 
 [features]
-default = ["derive"]
-derive = []
+default = ["macros"]
+macros = ["dep:rs_filter_macros"]
+
+[dependencies]
+rs_filter_macros = { path = "./rs_filter_macros", optional = true }
