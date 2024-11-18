@@ -69,14 +69,14 @@ dependencies = [
 
 [[package]]
 name = "rs_filter"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "rs_filter_macros",
 ]
 
 [[package]]
 name = "rs_filter_macros"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "darling",
  "proc-macro2",
