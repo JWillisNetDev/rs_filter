@@ -18,6 +18,25 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions-rust-lang/audit@v1
 
+  licenses:
+    name: Licenses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve cargo-about
+        uses: actions/cache@v4
+        id: cargo_about_cache
+        with:
+          path: ~/.cargo/bin/cargo-about
+          key: ${{ runner.os }}-cargo-about
+
+      - name: Install cargo-about
+        if: steps.cargo_about_cache.outputs.cache-hit != 'true'
+        run: cargo install --locked cargo-about
+
+      - name: Generate licenses using cargo-about
+        run: cargo about generate --workspace --all-features about.hbs > ./rs_filter/licenses.html
+
   fmt:
     name: Cargo fmt
     runs-on: ubuntu-latest
@@ -30,6 +49,20 @@ jobs:
 
       - run: cargo fmt --all -- --check
 
+  docs_and_spellcheck:
+    name: Docs and Spellcheck
+    runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: "-Dwarnings"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Spellcheck
+        uses: crate-ci/types@master
+
+      - run: cargo doc --no-deps
+
   clippy:
     name: Cargo clippy
     runs-on: ubuntu-latest
@@ -40,15 +73,13 @@ jobs:
             toolchain: nightly
             components: clippy
 
-      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo clippy_cli
 
   build-and-test-linux:
     name: Build and Test (Linux/stable)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@v1
-        with:
-            toolchain: stable
+      - uses: dtolnay/rust-toolchain@stable
 
       - run: cargo test ./rs_filter --workspace --all-features
