@@ -2,7 +2,7 @@ use rs_filter::{Filterable, StringFilter};
 
 #[test]
 fn test_string_filter_eq() {
-    let filter = StringFilter::Eq("hello");
+    let filter = StringFilter::Eq("hello".into());
 
     let value = "hello";
     assert!(value.is_match(&filter));
@@ -62,7 +62,7 @@ fn test_string_filter_none() {
 
 #[test]
 fn test_string_filter_contains() {
-    let filter = StringFilter::Contains("hello");
+    let filter = StringFilter::Contains("hello".into());
 
     let value = "hello world";
     assert!(value.is_match(&filter));
@@ -82,7 +82,7 @@ fn test_string_filter_contains() {
 
 #[test]
 fn test_string_filter_starts_with() {
-    let filter = StringFilter::StartsWith("hello");
+    let filter = StringFilter::StartsWith("hello".into());
 
     let value = "hello world";
     assert!(value.is_match(&filter));
@@ -102,7 +102,7 @@ fn test_string_filter_starts_with() {
 
 #[test]
 fn test_string_filter_ends_with() {
-    let filter = StringFilter::EndsWith("world");
+    let filter = StringFilter::EndsWith("world".into());
 
     let value = "hello world";
     assert!(value.is_match(&filter));

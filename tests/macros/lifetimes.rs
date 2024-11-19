@@ -6,9 +6,9 @@ struct TestStruct<'a> {
 }
 
 #[filter_for(TestStruct<'a>)]
-struct TestFilter<'a> {
-    a: StringFilter<&'a str>,
-    b: StringFilter<&'a str>,
+struct TestFilter {
+    a: StringFilter,
+    b: StringFilter,
 }
 
 #[test]
@@ -19,7 +19,7 @@ fn it_matches_lifetimes() {
     };
 
     let filter = TestFilter {
-        a: StringFilter::Contains("ell"),
+        a: StringFilter::Contains("ell".to_string()),
         b: StringFilter::None,
     };
 

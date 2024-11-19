@@ -16,8 +16,8 @@ struct TestStruct {
 struct TestFilter {
     a: OrdFilter<i32>,
     b: OrdFilter<i32>,
-    c: StringFilter<String>,
-    d: StringFilter<String>,
+    c: StringFilter,
+    d: StringFilter,
     e: EqFilter<bool>,
     f: EqFilter<bool>,
 }

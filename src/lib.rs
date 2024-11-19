@@ -80,51 +80,55 @@ impl<T: PartialOrd> Filterable<OrdFilter<T>> for Option<T> {
 }
 
 #[derive(Default, Clone, PartialEq)]
-pub enum StringFilter<T: AsRef<str>> {
+pub enum StringFilter {
     #[default]
     Any,
     None,
-    Eq(T),
-    Neq(T),
-    Contains(T),
-    StartsWith(T),
-    EndsWith(T),
+    Eq(String),
+    Neq(String),
+    Contains(String),
+    StartsWith(String),
+    EndsWith(String),
 }
 
-impl<T: AsRef<str>> Filterable<StringFilter<T>> for T {
-    fn is_match(&self, filter: &StringFilter<T>) -> bool {
+trait NotOption { }
+impl NotOption for String { }
+impl NotOption for &str { }
+
+impl<T: NotOption + AsRef<str>> Filterable<StringFilter> for T {
+    fn is_match(&self, filter: &StringFilter) -> bool {
         match filter {
             StringFilter::Any => true,
             StringFilter::None => false,
-            StringFilter::Eq(val) => self.as_ref() == val.as_ref(),
-            StringFilter::Neq(val) => self.as_ref() != val.as_ref(),
-            StringFilter::Contains(val) => self.as_ref().contains(val.as_ref()),
-            StringFilter::StartsWith(val) => self.as_ref().starts_with(val.as_ref()),
-            StringFilter::EndsWith(val) => self.as_ref().ends_with(val.as_ref()),
+            StringFilter::Eq(val) => self.as_ref() == val,
+            StringFilter::Neq(val) => self.as_ref() != val,
+            StringFilter::Contains(val) => self.as_ref().contains(val),
+            StringFilter::StartsWith(val) => self.as_ref().starts_with(val),
+            StringFilter::EndsWith(val) => self.as_ref().ends_with(val),
         }
     }
 }
 
-impl<T: AsRef<str>> Filterable<StringFilter<T>> for Option<T> {
-    fn is_match(&self, filter: &StringFilter<T>) -> bool {
+impl<T: AsRef<str>> Filterable<StringFilter> for Option<T> {
+    fn is_match(&self, filter: &StringFilter) -> bool {
         match filter {
             StringFilter::Any => true,
             StringFilter::None => self.is_none(),
             StringFilter::Eq(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref() == val.as_ref()),
+                .is_some_and(|inner| inner.as_ref() == val),
             StringFilter::Neq(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref() != val.as_ref()),
+                .is_some_and(|inner| inner.as_ref() != val),
             StringFilter::Contains(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref().contains(val.as_ref())),
+                .is_some_and(|inner| inner.as_ref().contains(val)),
             StringFilter::StartsWith(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref().starts_with(val.as_ref())),
+                .is_some_and(|inner| inner.as_ref().starts_with(val)),
             StringFilter::EndsWith(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref().ends_with(val.as_ref())),
+                .is_some_and(|inner| inner.as_ref().ends_with(val))
         }
     }
 }

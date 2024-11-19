@@ -36,7 +36,7 @@ pub fn filter_for(args: TokenStream, input: TokenStream) -> TokenStream {
     // Construct the filter method body.
     let q = quote! {
         #input
-        impl #generics Filterable<#filter_type #generics> for #type_arg {
+        impl #generics Filterable<#filter_type> for #type_arg {
             fn is_match(&self, filter: &#filter_type) -> bool {
                 #(
                     self.#fields.is_match(&filter.#fields)
