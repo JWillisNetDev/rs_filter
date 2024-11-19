@@ -91,9 +91,9 @@ pub enum StringFilter {
     EndsWith(String),
 }
 
-trait NotOption { }
-impl NotOption for String { }
-impl NotOption for &str { }
+trait NotOption {}
+impl NotOption for String {}
+impl NotOption for &str {}
 
 impl<T: NotOption + AsRef<str>> Filterable<StringFilter> for T {
     fn is_match(&self, filter: &StringFilter) -> bool {
@@ -114,12 +114,8 @@ impl<T: AsRef<str>> Filterable<StringFilter> for Option<T> {
         match filter {
             StringFilter::Any => true,
             StringFilter::None => self.is_none(),
-            StringFilter::Eq(val) => self
-                .as_ref()
-                .is_some_and(|inner| inner.as_ref() == val),
-            StringFilter::Neq(val) => self
-                .as_ref()
-                .is_some_and(|inner| inner.as_ref() != val),
+            StringFilter::Eq(val) => self.as_ref().is_some_and(|inner| inner.as_ref() == val),
+            StringFilter::Neq(val) => self.as_ref().is_some_and(|inner| inner.as_ref() != val),
             StringFilter::Contains(val) => self
                 .as_ref()
                 .is_some_and(|inner| inner.as_ref().contains(val)),
@@ -128,7 +124,7 @@ impl<T: AsRef<str>> Filterable<StringFilter> for Option<T> {
                 .is_some_and(|inner| inner.as_ref().starts_with(val)),
             StringFilter::EndsWith(val) => self
                 .as_ref()
-                .is_some_and(|inner| inner.as_ref().ends_with(val))
+                .is_some_and(|inner| inner.as_ref().ends_with(val)),
         }
     }
 }
