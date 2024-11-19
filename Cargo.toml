@@ -9,7 +9,7 @@ edition = "2021"
 license = "MIT"
 repository = "https://github.com/JWillisNetDev/rs_filter"
 include = ["src/**/*"]
-version = "0.2.0"
+version = "0.3.0"
 
 [package]
 authors.workspace = true
@@ -25,4 +25,4 @@ default = ["macros"]
 macros = ["dep:rs_filter_macros"]
 
 [dependencies]
-rs_filter_macros = { path = "./rs_filter_macros", version = "0.2.0", optional = true }
+rs_filter_macros = { path = "./rs_filter_macros", version = "0.3.0", optional = true }
